@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'corsheaders',
-    # 'django_secure',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +54,7 @@ MIDDLEWARE = [
 ]
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',  # URL de ton frontend (si tu utilises React)
+    'https://127.0.0.1:8000'
 ]
 ROOT_URLCONF = 'backend.urls'
 
@@ -129,7 +129,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL ='users.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -146,15 +146,15 @@ SIMPLE_JWT = {
 }
 
 # Forcer le chiffrement HTTPS
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = False
 
 # Empêcher les sniffing de type MIME
-SECURE_CONTENT_TYPE_NOSNIFF = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
 
-# Activation de HSTS
-SECURE_HSTS_SECONDS = 31536000  # 1 an
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+# # Activation de HSTS
+# SECURE_HSTS_SECONDS = 31536000  # 1 an
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True
 
 LOGGING = {
     'version': 1,
@@ -173,7 +173,9 @@ LOGGING = {
         },
     },
 }
-
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 ETHERSCAN_API_KEY = '22DSJEVUZQCBFPJFECGN2M821W3UV6DNF7'
 CRYPTOCOMPARE_API_KEY = 'e8fa3c8c8898c3d92d716169f5373bdbc0c0109068ce1802091b2d4bbc88155e'
