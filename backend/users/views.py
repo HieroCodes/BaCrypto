@@ -79,6 +79,8 @@ class RegisterView(APIView):
                 password=password, 
                 role=role
             )
+            user.is_active = True
+            user.save()
             serializer = UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -121,3 +123,4 @@ class LoginView(APIView):
             }, status=status.HTTP_200_OK)
         
         return Response({"error": "RData not found"}, status=status.HTTP_400_BAD_REQUEST)
+    
