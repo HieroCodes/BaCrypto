@@ -135,6 +135,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'EXCEPTION_HANDLER': 'users.middlewares.custom_exception_handler',
 }
 
 SIMPLE_JWT = {
@@ -154,3 +155,26 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_HSTS_SECONDS = 31536000  # 1 an
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+
+ETHERSCAN_API_KEY = '22DSJEVUZQCBFPJFECGN2M821W3UV6DNF7'
+CRYPTOCOMPARE_API_KEY = 'e8fa3c8c8898c3d92d716169f5373bdbc0c0109068ce1802091b2d4bbc88155e'
+
