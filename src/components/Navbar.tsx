@@ -10,16 +10,20 @@ const Navbar = () => {
         await API.delete("/auth/logout");
         logout();
         localStorage.removeItem("token");
+        localStorage.removeItem("username");
+
     }
+    const username = localStorage.getItem("username");
 
     return (
         <nav className="bg-gray-800 text-white p-4 flex justify-between">
-            <Link to="/" className="font-bold text-lg">My App</Link>
+            <Link to="/" className="font-bold text-lg">BaCrypto</Link>
             <div>
                 {user ? (
                     <>
-                        <Link to="/dashboard" className="mr-4">Dashboard</Link>
+                        <Link to="/dashboard" className="mr-4">Dashboard</Link> 
                         <Link to="/profile" className="mr-4">Profile</Link>
+                        {username && <span className="mr-4">Welcome, {username}</span>}
                         <button onClick={handleLogout} className="bg-red-500 px-4 py-2 rounded">Logout</button>
                     </>
                 ) : (

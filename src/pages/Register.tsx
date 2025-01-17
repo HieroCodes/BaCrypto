@@ -6,6 +6,7 @@ const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
+    username : "",
     password: "",
     confirmPassword: "",
   });
@@ -26,9 +27,10 @@ const Register = () => {
     }
 
     try {
-      const { email, password } = formData;
+      const { email, username, password } = formData;
 
-      await API.post("/auth/register", { email, password });
+      await API.post("/auth/register", { email, username, password });
+
       navigate("/login");
     } catch (error: any) {
       setErrors(error.response?.data?.message || "Registration failed.");
@@ -58,6 +60,21 @@ const Register = () => {
             placeholder="example@email.com"
           />
         </div>
+        <div>
+          <label htmlFor="username" className="block font-medium mb-1">
+            Username
+          </label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+            className="w-full p-2 border rounded"
+            placeholder="John Doe"
+          />
+        </div>
 
         {/* Password */}
         <div>
@@ -75,8 +92,6 @@ const Register = () => {
             placeholder="Enter your password"
           />
         </div>
-
-        {/* Confirm Password */}
         <div>
           <label htmlFor="confirmPassword" className="block font-medium mb-1">
             Confirm Password

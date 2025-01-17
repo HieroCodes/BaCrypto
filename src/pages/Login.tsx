@@ -5,16 +5,17 @@ import { Navigate } from "react-router-dom";
 
 const Login = () => {
     const { user, login } = useAuth();
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const { data } = await API.post("/auth/login", { email, password });
+            const { data } = await API.post("auth/login", { username, password });
             login();
-            localStorage.setItem("token", data.accessToken);
+            localStorage.setItem("token", data.access_token);
+            localStorage.setItem("username", data.username);
             console.log(data);
         } catch (error) {
             console.error("Login failed");
@@ -29,10 +30,10 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="max-w-md mx-auto p-4 space-y-4">
             <h1 className="text-2xl font-bold">Login</h1>
             <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                placeholder="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full p-2 border rounded"
             />
             <input

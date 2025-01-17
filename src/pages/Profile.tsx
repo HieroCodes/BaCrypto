@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import API from "../services/api";
 
 const Profile = () => {
-    const [wallet, setWallet] = useState<string>("");
+    const [wallets, setWallet] = useState<string>("");
 
     useEffect(() => {
         const fetchWallet = async () => {
             try {
-                const { data } = await API.get("/profile/get_wallet");
+                const { data } = await API.get("profile/wallets/evolution");
                 setWallet(data.wallet);
             } catch (error) {
                 console.error("Failed to fetch wallet");
@@ -20,7 +20,7 @@ const Profile = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await API.put("/profile/update_wallet", { wallet });
+            await API.put("/profile/wallets/evolution", { wallets });
         } catch (error) {
             console.error("Failed to update wallet");
         }
@@ -33,7 +33,7 @@ const Profile = () => {
                 <input
                     type="text"
                     placeholder="Wallet"
-                    value={wallet}
+                    value={wallets}
                     onChange={(e) => setWallet(e.target.value)}
                     className="w-full p-2 border rounded"
                 />

@@ -85,6 +85,7 @@ class RegisterView(APIView):
                 role = Role.objects.get(id=role_id)
             else:
                 role = None
+            
             user = User.objects.create_user(
                 username=username,
                 email=email,
@@ -130,8 +131,9 @@ class LoginView(APIView):
             access_token = str(refresh.access_token)
 
             response = Response({
-              "access_token": str(refresh.access_token),
+                "access_token": str(refresh.access_token),
                 "refresh_token": str(refresh),
+                "username":user.username
              }, status=status.HTTP_200_OK)
 
             # Ajouter le refresh token dans les cookies sécurisés
@@ -273,6 +275,8 @@ class ResetPasswordView(APIView):
         user = User.objects.get(id=user_id)
         user.set_password(new_password)
         user.save()
+
+        # TODO: blacklist all user's refresh token
 
         return Response({"message": "Password reset successfully"}, status=200)
 

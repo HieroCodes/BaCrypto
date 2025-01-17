@@ -58,6 +58,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',  # URL de ton frontend (si tu utilises React)
     'https://127.0.0.1:8000'
 ]
+CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
