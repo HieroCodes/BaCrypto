@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'corsheaders',
+    'rest_framework_simplejwt.token_blacklist'
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',  # URL de ton frontend (si tu utilises React)
@@ -143,6 +145,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': True,
 }
 
 # Forcer le chiffrement HTTPS
