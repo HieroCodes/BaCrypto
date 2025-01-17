@@ -39,7 +39,12 @@ const Dashboard = () => {
             try {
                 setIsLoading(true);
                 const response = await API.get("/profile/wallets/evolution");
-                setData(response.data);
+                if (response.data && Array.isArray(response.data.evolution)) {
+                    setData(response.data.evolution);
+                } else {
+                    setError("Invalid response format from API.");
+                }
+                setError(null);
 
                 // const fakeData: PriceEvolution[] = [
                 //     { date: "2025-01-01", price: 1000 },
@@ -52,7 +57,7 @@ const Dashboard = () => {
                 // ];
                 // await new Promise((resolve) => setTimeout(resolve, 1000));
                 // setData(fakeData);
-                setError(null);
+                //setError(null);
             } catch (err) {
                 setError("Failed to fetch data. Please try again later.");
             } finally {
@@ -62,6 +67,7 @@ const Dashboard = () => {
 
         fetchData();
     }, []);
+    
 
     const chartData = {
         labels: data.map((entry) => entry.date),
