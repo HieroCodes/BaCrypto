@@ -15,10 +15,10 @@ def get_etherscan_transactions(address):
     response = requests.get(url, params=params)
     return response.json()
 
-def get_crypto_prices(symbol):
+def get_crypto_prices(devise):
     url = f"https://min-api.cryptocompare.com/data/price"
     params = {
-        'fsym': symbol,
+        'fsym': devise,
         'tsyms': 'USD,EUR',
         'api_key': settings.CRYPTOCOMPARE_API_KEY
     }

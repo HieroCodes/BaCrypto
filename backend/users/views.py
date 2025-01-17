@@ -33,17 +33,19 @@ def test_logging(request):
 @api_view(['GET'])
 def transactions(request):
     address = request.query_params.get('address')
+    print(address)
     if not address:
         return Response({"error": "Address is required"}, status=400)
     data = get_etherscan_transactions(address)
+    print(data)
     return Response(data)
 
 @api_view(['GET'])
 def prices(request):
-    symbol = request.query_params.get('symbol')
-    if not symbol:
-        return Response({"error": "Symbol is required"}, status=400)
-    data = get_crypto_prices(symbol)
+    devise = request.query_params.get('devise')
+    if not devise:
+        return Response({"error": "Devise is required"}, status=400)
+    data = get_crypto_prices(devise)
     return Response(data)
 
 
@@ -183,6 +185,7 @@ class WalletListView(APIView):
 
     def put(self, request):
         data = request.data.get("wallets")
+        print(data)
         if not data:
             return Response({"error": "Wallet data is required"}, status=400)
 
@@ -224,15 +227,15 @@ class ResendEmailView(APIView):
 
 class WalletEvolutionView(APIView):
     permission_classes = [IsAuthenticated]
-
     def get(self, request):
+        devise = "ETH"
         wallets = Wallet.objects.filter(user=request.user)
         if not wallets.exists():
             return Response({"error": "No wallets found for user"}, status=404)
 
         all_evolution = []
         for wallet in wallets:
-            evolution = calculate_wallet_evolution(wallet.address)
+            evolution = calculate_wallet_evolution(wallet.address, devise)
             all_evolution.extend(evolution)
 
         merged_evolution = {}

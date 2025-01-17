@@ -19,8 +19,10 @@ const Profile = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        console.log(wallets);
         try {
             await API.put("/profile/wallets/evolution", { wallets });
+            
         } catch (error) {
             console.error("Failed to update wallet");
         }
