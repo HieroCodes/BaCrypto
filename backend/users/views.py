@@ -227,8 +227,9 @@ class ResendEmailView(APIView):
 
 class WalletEvolutionView(APIView):
     permission_classes = [IsAuthenticated]
+    
     def get(self, request):
-        devise = "ETH"
+        devise = request.query_params.get("devise", "ETH")  # Par défaut, "ETH"
         wallets = Wallet.objects.filter(user=request.user)
         if not wallets.exists():
             return Response({"error": "No wallets found for user"}, status=404)
@@ -236,29 +237,44 @@ class WalletEvolutionView(APIView):
         all_evolution = []
         for wallet in wallets:
             evolution = calculate_wallet_evolution(wallet.address, devise)
+            if isinstance(evolution, dict) and "error" in evolution:
+                return Response({"error": evolution["error"]}, status=400)
             all_evolution.extend(evolution)
 
+        # Fusionner les données par date
         merged_evolution = {}
         for entry in all_evolution:
             date = entry["date"]
             merged_evolution[date] = merged_evolution.get(date, 0) + entry["price"]
 
+        # Tri des données
         sorted_evolution = [{"date": date, "price": price} for date, price in sorted(merged_evolution.items())]
-        return Response(sorted_evolution, status=200)
 
+        return Response({
+            "wallets": [wallet.address for wallet in wallets],
+            "evolution": sorted_evolution
+        }, status=200)
+    
     def put(self, request):
         print("Données reçues :", request.data)  # Log des données reçues
         data = request.data.get("wallets")
-        if not data:
-            return Response({"error": "Wallet data is required"}, status=400)
+        if not data or not isinstance(data, list):
+            return Response({"error": "Wallet data must be a list of wallets"}, status=400)
 
         try:
-            Wallet.objects.filter(user=request.user).delete()
             for wallet_data in data:
-                Wallet.objects.create(user=request.user, address=wallet_data["address"])
-            return Response({"message": "Wallets updated successfully"}, status=200)
+                wallet = Wallet.objects.filter(user=request.user).first()
+                if wallet:
+                    wallet.address = wallet_data["address"]
+                    wallet.save()
+                else:
+                    Wallet.objects.create(user=request.user, address=wallet_data["address"])
+
+            return Response({"message": "Wallet updated successfully"}, status=200)
+
         except Exception as e:
             return Response({"error": str(e)}, status=400)
+
 
  
 
