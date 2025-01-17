@@ -13,7 +13,16 @@ def get_etherscan_transactions(address):
         'apikey': settings.ETHERSCAN_API_KEY
     }
     response = requests.get(url, params=params)
-    return response.json()
+    data = response.json()
+    #print("Réponse brute d'Etherscan :", data)
+
+    # Vérifiez si le résultat est valide
+    if "status" in data and data["status"] == "1" and "result" in data:
+        return data["result"]
+    else:
+        print("Erreur ou réponse inattendue :", data)
+        return []
+
 
 def get_crypto_prices(devise):
     url = f"https://min-api.cryptocompare.com/data/price"

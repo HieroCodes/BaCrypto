@@ -38,7 +38,7 @@ const Dashboard = () => {
         const fetchData = async () => {
             try {
                 setIsLoading(true);
-                const response = await API.get("/wallet/get_data");
+                const response = await API.get("/profile/wallets/evolution");
                 setData(response.data);
 
                 // const fakeData: PriceEvolution[] = [

@@ -16,6 +16,7 @@ urlpatterns = [
     path('api/v1/auth/validate/email', ValidateEmailView.as_view(), name='validate_email'),
     path('api/v1/auth/resend/email', ResendEmailView.as_view(), name='resend_email'),
     path('api/v1/profile/wallets/evolution', WalletEvolutionView.as_view(), name='wallets_evolution'),
+
     path('api/v1/auth/forgot/password', ForgotPasswordView.as_view(), name='forgot_password'),
     path('api/v1/auth/reset/password', ResetPasswordView.as_view(), name='reset_password'),
 
